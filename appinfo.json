@@ -1,0 +1,77 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "BubiDevs",
+    "longName": "Kirk - A Wunderlist client for Pebble",
+    "projectType": "pebblejs",
+    "resources": {
+        "media": [
+            {
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/logo_splash.png",
+                "name": "IMAGE_LOGO_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/tile_splash.png",
+                "name": "IMAGE_TILE_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "fonts/UbuntuMono-Regular.ttf",
+                "name": "MONO_FONT_14",
+                "type": "font"
+            },
+            {
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "IMAGE_APP_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/folder_icon.png",
+                "name": "IMAGE_FOLDER_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/checklist_icon.png",
+                "name": "IMAGE_CHECK_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/inbox_icon.png",
+                "name": "IMAGE_INBOX_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/settings_icon.png",
+                "name": "IMAGE_SETTINGS_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/error_icon.png",
+                "name": "IMAGE_ERROR_ICON",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Kirk",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "60a9c934-729e-412d-9cb9-22c973063eb7",
+    "versionCode": 1,
+    "versionLabel": "0.1",
+    "watchapp": {
+        "hiddenApp": false,
+        "watchface": false
+    }
+}
