@@ -157,6 +157,24 @@ function createTask(listId, title, onSuccess, onError){
   );
 }
 
+// Mark a task as completed
+function markTaskAsCompleted(taskId, onSuccess, onError) {
+   var task = {
+      completed: true
+   };
+   ajax(
+      {
+         url: APIURL.Tasks + "/" + taskId,
+         type: 'json',
+         headers: requestHeaders,
+         method: 'post',
+         data: task
+      },
+      onSuccess,
+      onError
+   );
+}
+
 // Utility
 
 function findInboxList(menuList){
@@ -183,3 +201,4 @@ module.exports.findInboxList = findInboxList;
 module.exports.getTask = getTask
 module.exports.getTasksForList = getTasksForList;
 module.exports.createTask = createTask;
+module.exports.markTaskAsCompleted = markTaskAsCompleted;

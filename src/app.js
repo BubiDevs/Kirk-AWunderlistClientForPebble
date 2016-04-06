@@ -258,10 +258,19 @@ function displayTaskDetails(task) {
       }
    });
    taskCard.on('click', 'select', function () {
-      displayCompletedTask();
+      completeTask(task.id);
       taskCard.hide();
    });
    taskCard.show();
+}
+
+function completeTask(taskId) {
+   WunderlistSDK.markTaskAsCompleted(
+      taskId,
+      function () {
+         displayCompletedTask();
+      },
+      errorHandler);
 }
 
 function displayCompletedTask() {
