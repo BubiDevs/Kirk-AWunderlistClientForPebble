@@ -284,7 +284,7 @@ function completeTask(task) {
 function displayCompletedTask() {
    var card = new UI.Card({
       banner: Images.COMPLETED_ICON,
-      body: "Task completed!"
+      body: " Task completed!"
    });
    card.show();
    // wait few seconds and go back to original list. 
