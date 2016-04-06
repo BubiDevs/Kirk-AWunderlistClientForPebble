@@ -159,9 +159,8 @@ function createTask(listId, title, onSuccess, onError){
 
 // Mark a task as completed
 function markTaskAsCompleted(originalTask, onSuccess, onError) {
-   console.log("taskid: " + originalTask.id);
    var task = {
-      revision: originalTask.revision + 1,
+      revision: originalTask.revision,
       completed: true
    };
    ajax(

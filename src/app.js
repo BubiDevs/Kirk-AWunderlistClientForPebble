@@ -1,3 +1,4 @@
+// Imports
 require('js-utility');
 var ajax = require('ajax');
 var UI = require('ui');
@@ -6,17 +7,15 @@ var Vector2 = require('vector2');
 var WunderlistSDK = require('wunderlist-sdk');
 var Settings = require('settings');
 
-var DEBUG = true;
-var MAX_TITLE_LENGTH_IN_DETAILS = 25;
-var backendURL = "http://kirk-pebble.azurewebsites.net";
-
+// Resources
 var Images = {
    INBOX_ICON: "images/inbox_icon.png",
    FOLDER_ICON: "images/folder_icon.png",
    CHECK_ICON: "images/checklist_icon.png",
    SETTINGS_ICON: "images/settings_icon.png",
    ERROR_ICON: "images/error_icon.png",
-   ACTION_COMPLETED_ICON: "images/action_completed_icon.png"
+   ACTION_COMPLETED_ICON: "images/action_completed_icon.png",
+   COMPLETED_ICON: "images/completed_icon.png"
 };
 
 var Colors = {
@@ -27,9 +26,15 @@ var Colors = {
    Yellow: "#E6B035"
 };
 
+// Constants
+var DEBUG = true;
+var MAX_TITLE_LENGTH_IN_DETAILS = 25; // maximum title length in detail card
+var backendURL = "http://kirk-pebble.azurewebsites.net";
+
 // Internal state
 // Current list displayed. Used to go back after the user complete a task
 var currentListMenu = null;
+
 
 // show splash screen while loading Inbox
 var splashWindow = new UI.Window();
@@ -46,6 +51,7 @@ var text = new UI.Text({
 splashWindow.add(text);
 splashWindow.show();
 
+// manage Settings from Pebble app
 Settings.config
 (
    {
@@ -58,7 +64,7 @@ Settings.config
    function(e) {
       // webview closed
       console.log("settings closed (data: " + JSON.stringify(e.response) + " )");
-
+      // check for a token. If one exists, we need to refresh internal data of WunderlistSDK
       var response = JSON.parse(e.response);
       if (response.token) {
          WunderlistSDK.refreshToken();
@@ -70,7 +76,6 @@ Settings.config
 // check for saved token
 function checkRequriedData() {
    var token = Settings.option("token");
-   console.log("token saved: " + token);
    
    if (token || DEBUG){
       startApp();
@@ -259,11 +264,13 @@ function displayTaskDetails(task) {
    });
    taskCard.on('click', 'select', function () {
       completeTask(task);
+      // hide detail card, user will go back to List
       taskCard.hide();
    });
    taskCard.show();
 }
 
+// Complete a specific task
 function completeTask(task) {
    WunderlistSDK.markTaskAsCompleted(
       task,
@@ -273,11 +280,15 @@ function completeTask(task) {
       errorHandler);
 }
 
+// Display card to inform user that a specific task has marked as completed
 function displayCompletedTask() {
    var card = new UI.Card({
-      title: "Completed!"
+      banner: Images.COMPLETED_ICON,
+      body: "Task completed!"
    });
    card.show();
+   // wait few seconds and go back to original list. 
+   // Before that we need to reload all the tasks
    setTimeout(function () {
       // reload tasks
       var listId = currentListMenu.wund_ListId;
@@ -287,7 +298,7 @@ function displayCompletedTask() {
       });
       
       card.hide();
-   }, 1000);
+   }, 1500);
 }
 
 function errorHandler(error) {
