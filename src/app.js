@@ -298,7 +298,7 @@ function displayCompletedTask() {
       });
       
       card.hide();
-   }, 1500);
+   }, 2000);
 }
 
 function errorHandler(error) {
