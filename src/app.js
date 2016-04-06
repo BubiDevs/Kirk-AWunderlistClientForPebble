@@ -27,6 +27,10 @@ var Colors = {
    Yellow: "#E6B035"
 };
 
+// Internal state
+// Current list displayed. Used to go back after the user complete a task
+var currentList = null;
+
 // show splash screen while loading Inbox
 var splashWindow = new UI.Window();
 var text = new UI.Text({
@@ -142,8 +146,6 @@ function startApp() {
       );
 }
 
-var currentList= null;
-
 // Display all lists of a folder
 function displayListsForFolder(folder) {
    var lists = folder.lists;
@@ -251,6 +253,7 @@ function displayTaskDetails(task) {
    });
    taskCard.on('click', 'select', function () {
       displayCompletedTask();
+      taskCard.hide();
    });
    taskCard.show();
 }
@@ -261,7 +264,8 @@ function displayCompletedTask() {
    });
    card.show();
    setTimeout(function () {
-      displayList(currentList);
+      //displayList(currentList);
+      card.hide();
    }, 1000);
 }
 
