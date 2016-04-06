@@ -258,15 +258,15 @@ function displayTaskDetails(task) {
       }
    });
    taskCard.on('click', 'select', function () {
-      completeTask(task.id);
+      completeTask(task);
       taskCard.hide();
    });
    taskCard.show();
 }
 
-function completeTask(taskId) {
+function completeTask(task) {
    WunderlistSDK.markTaskAsCompleted(
-      taskId,
+      task,
       function () {
          displayCompletedTask();
       },
@@ -308,6 +308,7 @@ function errorHandler(error) {
       },
       function (error) {
          console.log("Error during logging error. No way.");
+         console.log("Original error: " + JSON.stringify(error));
       }
    );
       
