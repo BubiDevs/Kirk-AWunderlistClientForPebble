@@ -68,20 +68,18 @@ function checkRequriedData() {
    var token = Settings.option("token");
    console.log("token saved: " + token);
    
-   if (!token){
+   if (token || DEBUG){
+      startApp();
+   } else {
       splashWindow.hide();
       var errorCard = new UI.Card({
          banner: Images.SETTINGS_ICON,
          body: "Before start, we need a little configuration. Open Kirk's Settings in Pebble app."
       });
       errorCard.show();
-   } else {
-      startApp();
    }
 }
-if (!DEBUG){
-   checkRequriedData();   
-}
+checkRequriedData();
 
 
 // load main menu
@@ -144,6 +142,8 @@ function startApp() {
       );
 }
 
+var currentList= null;
+
 // Display all lists of a folder
 function displayListsForFolder(folder) {
    var lists = folder.lists;
@@ -165,6 +165,7 @@ function displayListsForFolder(folder) {
    // attach event on list selection
    folderMenu.on('select', function(e) {
       var list = lists[e.itemIndex];
+      currentList = list;
       displayList(list);
    });
 }
@@ -199,29 +200,6 @@ function displayList(list) {
       );
 }
 
-// display task details into a Card
-function displayTaskDetails(task) {
-   var title = task.title;
-   var body = task.note ? task.note : "";
-   if (title.length > MAX_TITLE_LENGTH_IN_DETAILS) {
-      title = title.substr(0, MAX_TITLE_LENGTH_IN_DETAILS - 3) + "...";
-      body = task.title + "\n" + body;
-   }
-
-   var taskCard = new UI.Card({
-      title: title,
-      subtitle: task.due_date ? task.due_date : "",
-      body: body,
-      scrollable: true,
-      action: {
-         up: "",
-         down: "",
-         select: Images.ACTION_COMPLETED_ICON
-      }
-   });
-   taskCard.show();
-}
-
 // create a new task (with dictation)
 function createTask(listId) {
    Voice.dictate('start', false, function(e) {
@@ -249,6 +227,42 @@ function createTask(listId) {
          errorHandler
          );
    });
+}
+
+// display task details into a Card
+function displayTaskDetails(task) {
+   var title = task.title;
+   var body = task.note ? task.note : "";
+   if (title.length > MAX_TITLE_LENGTH_IN_DETAILS) {
+      title = title.substr(0, MAX_TITLE_LENGTH_IN_DETAILS - 3) + "...";
+      body = task.title + "\n" + body;
+   }
+
+   var taskCard = new UI.Card({
+      title: title,
+      subtitle: task.due_date ? task.due_date : "",
+      body: body,
+      scrollable: true,
+      action: {
+         up: "",
+         down: "",
+         select: Images.ACTION_COMPLETED_ICON
+      }
+   });
+   taskCard.on('click', 'select', function () {
+      displayCompletedTask();
+   });
+   taskCard.show();
+}
+
+function displayCompletedTask() {
+   var card = new UI.Card({
+      title: "Completed!"
+   });
+   card.show();
+   setTimeout(function () {
+      displayList(currentList);
+   }, 1000);
 }
 
 function errorHandler(error) {
