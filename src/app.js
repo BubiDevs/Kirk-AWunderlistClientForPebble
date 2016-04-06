@@ -29,7 +29,7 @@ var Colors = {
 
 // Internal state
 // Current list displayed. Used to go back after the user complete a task
-var currentList = null;
+var currentListMenu = null;
 
 // show splash screen while loading Inbox
 var splashWindow = new UI.Window();
@@ -167,7 +167,6 @@ function displayListsForFolder(folder) {
    // attach event on list selection
    folderMenu.on('select', function(e) {
       var list = lists[e.itemIndex];
-      currentList = list;
       displayList(list);
    });
 }
@@ -178,12 +177,7 @@ function displayList(list) {
       (
       list.id,
       function(tasks) {
-         // sort
-         tasks = tasks.sort(function(task1, task2) { return task1.title.localeCompare(task2.title) > 0; });
-         // create menu
-         var menuItems = tasks.map(function(task) {
-            return { title: task.title };
-         });
+         var menuItems = createMenuItemsForTasks(tasks);
          var tasksMenu = new UI.Menu({
             highlightBackgroundColor: Colors.Blue,
             highlightTextColor: Colors.Black,
@@ -192,14 +186,28 @@ function displayList(list) {
                items: menuItems
             }]
          });
-         tasksMenu.show();
          tasksMenu.on('select', function(e) {
             var task = tasks[e.itemIndex];
             displayTaskDetails(task);
          });
+         tasksMenu.show();
+         // save current menu for future usage. 
+         // Save also the list id (we need this information to reload tasks)
+         currentListMenu = tasksMenu;
+         currentListMenu.wund_ListId = list.id;
       },
       errorHandler
       );
+}
+
+function createMenuItemsForTasks(originalTasks) {
+   // sort
+   var tasks = originalTasks.sort(function(task1, task2) { return task1.title.localeCompare(task2.title) > 0; });
+   // create menu
+   var menuItems = tasks.map(function(task) {
+      return { title: task.title };
+   });
+   return menuItems;
 }
 
 // create a new task (with dictation)
@@ -246,8 +254,6 @@ function displayTaskDetails(task) {
       body: body,
       scrollable: true,
       action: {
-         up: "",
-         down: "",
          select: Images.ACTION_COMPLETED_ICON
       }
    });
@@ -264,7 +270,13 @@ function displayCompletedTask() {
    });
    card.show();
    setTimeout(function () {
-      //displayList(currentList);
+      // reload tasks
+      var listId = currentListMenu.wund_ListId;
+      WunderlistSDK.getTasksForList(listId, function (tasks) {
+         var menuItems = createMenuItemsForTasks(tasks);
+         currentListMenu.items(0, menuItems);
+      });
+      
       card.hide();
    }, 1000);
 }
