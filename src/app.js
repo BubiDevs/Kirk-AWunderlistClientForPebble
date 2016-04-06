@@ -258,17 +258,20 @@ function displayTaskDetails(task) {
       subtitle: task.due_date ? task.due_date : "",
       body: body,
       scrollable: true,
-      action: {
-         select: Images.ACTION_COMPLETED_ICON
-      }
    });
+   // first select display actions, the second one complete the task
    taskCard.on('click', 'select', function () {
-      completeTask(task);
-      // hide detail card, user will go back to List
-      taskCard.hide();
+      taskCard.action({select: "images/action_completed_icon.png"});
+      taskCard.on('click', 'select', function () {
+          completeTask(task);
+         // hide detail card, user will go back to List
+         taskCard.hide();
+      });
    });
    taskCard.show();
 }
+
+
 
 // Complete a specific task
 function completeTask(task) {
