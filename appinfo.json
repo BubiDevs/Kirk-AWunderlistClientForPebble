@@ -58,6 +58,11 @@
                 "file": "images/error_icon.png",
                 "name": "IMAGE_ERROR_ICON",
                 "type": "png"
+            },
+            {
+                "file": "images/action_completed_icon.png",
+                "name": "IMAGE_COMPLETED_ICON",
+                "type": "png"
             }
         ]
     },

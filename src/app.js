@@ -15,7 +15,8 @@ var Images = {
    FOLDER_ICON: "images/folder_icon.png",
    CHECK_ICON: "images/checklist_icon.png",
    SETTINGS_ICON: "images/settings_icon.png",
-   ERROR_ICON: "images/error_icon.png"
+   ERROR_ICON: "images/error_icon.png",
+   ACTION_COMPLETED_ICON: "images/action_completed_icon.png"
 };
 
 var Colors = {
@@ -209,7 +210,12 @@ function displayTaskDetails(task) {
       title: title,
       subtitle: task.due_date ? task.due_date : "",
       body: body,
-      scrollable: true
+      scrollable: true,
+      action: {
+         up: "",
+         down: "",
+         select: Images.ACTION_COMPLETED_ICON
+      }
    });
    taskCard.show();
 }
