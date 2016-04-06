@@ -68,7 +68,7 @@ function checkRequriedData() {
    var token = Settings.option("token");
    console.log("token saved: " + token);
    
-   if (!token && !DEBUG){
+   if (!token){
       splashWindow.hide();
       var errorCard = new UI.Card({
          banner: Images.SETTINGS_ICON,
@@ -79,7 +79,9 @@ function checkRequriedData() {
       startApp();
    }
 }
-checkRequriedData();
+if (!DEBUG){
+   checkRequriedData();   
+}
 
 
 // load main menu
